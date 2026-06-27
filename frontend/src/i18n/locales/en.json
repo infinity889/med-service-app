@@ -1,0 +1,162 @@
+{
+  "header": {
+    "quickSearch": "Quick search...",
+    "lastUpdate": "Last update: {{minutes}} min ago",
+    "notifications": "View notifications",
+    "language": "Language"
+  },
+  "nav": {
+    "overview": "Overview",
+    "system": "System",
+    "dashboard": "Dashboard",
+    "search": "Search",
+    "clinics": "Clinics",
+    "services": "Services",
+    "priceComparison": "Price Comparison",
+    "history": "History",
+    "statistics": "Statistics",
+    "settings": "Settings",
+    "moderator": "Moderator Panel"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of medical services and prices across Kazakhstan.",
+    "totalClinics": "Total Clinics",
+    "medicalServices": "Medical Services",
+    "priceRecords": "Price Records",
+    "avgServicePrice": "Avg. Service Price",
+    "priceTrend": "Average Price Trend (KZT)",
+    "recentUpdates": "Recent Updates",
+    "updatedAgo": "Updated {{hours}}h ago"
+  },
+  "search": {
+    "filters": "Filters",
+    "city": "City",
+    "allCities": "All Cities",
+    "category": "Category",
+    "allCategories": "All Categories",
+    "laboratory": "Laboratory",
+    "diagnostics": "Diagnostics",
+    "doctorVisit": "Doctor Visit",
+    "sortBy": "Sort By",
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low",
+    "placeholder": "Search for medical services, tests, or clinics...",
+    "searchButton": "Search",
+    "suggestions": "Suggestions:",
+    "results": "Search Results",
+    "found": "{{count}} found",
+    "serviceName": "Service Name",
+    "clinic": "Clinic",
+    "location": "Location",
+    "price": "Price",
+    "lastUpdated": "Last Updated",
+    "details": "Details",
+    "noResults": "No results found for your query.",
+    "clearSearch": "Clear search"
+  },
+  "clinic": {
+    "verified": "Verified",
+    "servicesProvided": "Services Provided",
+    "pricesParsedOn": "Prices parsed on {{date}}",
+    "serviceName": "Service Name",
+    "category": "Category",
+    "price": "Price"
+  },
+  "service": {
+    "knownSynonyms": "Known Synonyms",
+    "priceTrend": "Average Price Trend (KZT)",
+    "bestOffers": "Best Offers",
+    "compareAll": "Compare Across All Clinics",
+    "clinicName": "Clinic Name",
+    "city": "City",
+    "address": "Address",
+    "priceKzt": "Price (₸)",
+    "lastParsed": "Last Parsed"
+  },
+  "pages": {
+    "clinicsList": "Clinics List",
+    "priceComparison": "Price Comparison",
+    "history": "History",
+    "statistics": "Statistics",
+    "settings": "Settings"
+  },
+  "clinicsList": {
+    "title": "Clinics",
+    "subtitle": "Catalog of verified medical centers and laboratories",
+    "searchPlaceholder": "Search clinics...",
+    "found": "{{count}} clinics found",
+    "noResults": "No clinics found.",
+    "servicesCount": "{{count}} services"
+  },
+  "auth": {
+    "back": "Back",
+    "loginTitle": "Sign in to your account",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register",
+    "email": "Email address",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "loading": "Loading...",
+    "loginBtn": "Sign In",
+    "registerTitle": "Create an account",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginLink": "Sign In",
+    "fullName": "Full Name",
+    "city": "City (optional)",
+    "selectCity": "Select a city",
+    "agreeTerms": "I agree to the terms of use",
+    "registering": "Registering...",
+    "registerBtn": "Register",
+    "logout": "Log out",
+    "login": "Log In"
+  },
+  "services": {
+    "title": "Services Catalog",
+    "subtitle": "Choose a category or use the search",
+    "searchPlaceholder": "Search catalog...",
+    "labTests": "Laboratory Tests",
+    "diagnostics": "Diagnostics",
+    "consultations": "Doctor Consultations",
+    "noResults": "No results found"
+  },
+  "compare": {
+    "title": "Price Comparison",
+    "subtitle": "Compare service costs across different laboratories and clinics",
+    "feature": "Feature",
+    "price": "Price (₸)",
+    "time": "Turnaround Time",
+    "rating": "Clinic Rating",
+    "homeTake": "Home Sample Collection",
+    "updated": "Price Relevance",
+    "book": "Book Now"
+  },
+  "history": {
+    "title": "History & Bookmarks",
+    "subtitle": "Recently viewed services and saved clinics",
+    "recent": "Recently Viewed",
+    "bookmarks": "Bookmarks"
+  },
+  "statistics": {
+    "title": "Market Statistics",
+    "subtitle": "Analytics of prices and market shares of medical services",
+    "avgPriceByCity": "Average Prices by City (₸)",
+    "marketShare": "Laboratory Market Share (%)"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your profile and app preferences",
+    "profile": "Profile",
+    "fullName": "Full Name",
+    "email": "Email",
+    "location": "Location",
+    "defaultCity": "Default City",
+    "preferences": "Preferences",
+    "language": "Interface Language",
+    "notifications": "Notifications",
+    "notificationsDesc": "Receive alerts about price drops",
+    "saving": "Saving...",
+    "saveBtn": "Save Changes"
+  }
+}

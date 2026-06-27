@@ -1,0 +1,162 @@
+{
+  "header": {
+    "quickSearch": "Быстрый поиск...",
+    "lastUpdate": "Обновлено: {{minutes}} мин. назад",
+    "notifications": "Уведомления",
+    "language": "Язык"
+  },
+  "nav": {
+    "overview": "Обзор",
+    "system": "Система",
+    "dashboard": "Панель",
+    "search": "Поиск",
+    "clinics": "Клиники",
+    "services": "Услуги",
+    "priceComparison": "Сравнение цен",
+    "history": "История",
+    "statistics": "Статистика",
+    "settings": "Настройки",
+    "moderator": "Панель модератора"
+  },
+  "dashboard": {
+    "title": "Панель",
+    "subtitle": "Обзор медицинских услуг и цен по Казахстану.",
+    "totalClinics": "Всего клиник",
+    "medicalServices": "Мед. услуги",
+    "priceRecords": "Записей цен",
+    "avgServicePrice": "Средняя цена",
+    "priceTrend": "Динамика средней цены (₸)",
+    "recentUpdates": "Недавние обновления",
+    "updatedAgo": "Обновлено {{hours}} ч. назад"
+  },
+  "search": {
+    "filters": "Фильтры",
+    "city": "Город",
+    "allCities": "Все города",
+    "category": "Категория",
+    "allCategories": "Все категории",
+    "laboratory": "Лаборатория",
+    "diagnostics": "Диагностика",
+    "doctorVisit": "Приём врача",
+    "sortBy": "Сортировка",
+    "priceLowHigh": "Цена: по возрастанию",
+    "priceHighLow": "Цена: по убыванию",
+    "placeholder": "Поиск услуг, анализов или клиник...",
+    "searchButton": "Найти",
+    "suggestions": "Подсказки:",
+    "results": "Результаты поиска",
+    "found": "Найдено: {{count}}",
+    "serviceName": "Название услуги",
+    "clinic": "Клиника",
+    "location": "Локация",
+    "price": "Цена",
+    "lastUpdated": "Обновлено",
+    "details": "Подробнее",
+    "noResults": "По вашему запросу ничего не найдено.",
+    "clearSearch": "Очистить поиск"
+  },
+  "clinic": {
+    "verified": "Проверено",
+    "servicesProvided": "Предоставляемые услуги",
+    "pricesParsedOn": "Цены получены {{date}}",
+    "serviceName": "Название услуги",
+    "category": "Категория",
+    "price": "Цена"
+  },
+  "service": {
+    "knownSynonyms": "Известные синонимы",
+    "priceTrend": "Динамика средней цены (₸)",
+    "bestOffers": "Лучшие предложения",
+    "compareAll": "Сравнение по всем клиникам",
+    "clinicName": "Клиника",
+    "city": "Город",
+    "address": "Адрес",
+    "priceKzt": "Цена (₸)",
+    "lastParsed": "Последний парсинг"
+  },
+  "pages": {
+    "clinicsList": "Список клиник",
+    "priceComparison": "Сравнение цен",
+    "history": "История",
+    "statistics": "Статистика",
+    "settings": "Настройки"
+  },
+  "clinicsList": {
+    "title": "Клиники",
+    "subtitle": "Каталог проверенных медицинских центров и лабораторий",
+    "searchPlaceholder": "Поиск клиник...",
+    "found": "Найдено: {{count}}",
+    "noResults": "Клиники не найдены.",
+    "servicesCount": "Услуг: {{count}}"
+  },
+  "auth": {
+    "back": "Назад",
+    "loginTitle": "Вход в аккаунт",
+    "noAccount": "Нет аккаунта?",
+    "registerLink": "Зарегистрироваться",
+    "email": "Email адрес",
+    "password": "Пароль",
+    "rememberMe": "Запомнить меня",
+    "forgotPassword": "Забыли пароль?",
+    "loading": "Загрузка...",
+    "loginBtn": "Войти",
+    "registerTitle": "Создать аккаунт",
+    "alreadyHaveAccount": "Уже есть аккаунт?",
+    "loginLink": "Войти",
+    "fullName": "Имя и Фамилия",
+    "city": "Город (необязательно)",
+    "selectCity": "Выберите город",
+    "agreeTerms": "Я согласен с условиями использования",
+    "registering": "Регистрация...",
+    "registerBtn": "Зарегистрироваться",
+    "logout": "Выйти",
+    "login": "Войти"
+  },
+  "services": {
+    "title": "Каталог услуг",
+    "subtitle": "Выберите категорию или воспользуйтесь поиском",
+    "searchPlaceholder": "Поиск по каталогу...",
+    "labTests": "Лабораторные анализы",
+    "diagnostics": "Диагностика",
+    "consultations": "Прием врачей",
+    "noResults": "Ничего не найдено"
+  },
+  "compare": {
+    "title": "Сравнение цен",
+    "subtitle": "Сравните стоимость услуг в разных лабораториях и клиниках",
+    "feature": "Характеристика",
+    "price": "Цена (₸)",
+    "time": "Срок исполнения",
+    "rating": "Рейтинг клиники",
+    "homeTake": "Забор на дому",
+    "updated": "Актуальность цены",
+    "book": "Записаться"
+  },
+  "history": {
+    "title": "История и закладки",
+    "subtitle": "Недавно просмотренные услуги и сохраненные клиники",
+    "recent": "Недавно просмотренные",
+    "bookmarks": "Закладки"
+  },
+  "statistics": {
+    "title": "Рыночная статистика",
+    "subtitle": "Аналитика цен и долей рынка медицинских услуг",
+    "avgPriceByCity": "Средние цены по городам (₸)",
+    "marketShare": "Доля рынка лабораторий (%)"
+  },
+  "settings": {
+    "title": "Настройки",
+    "subtitle": "Управление профилем и предпочтениями приложения",
+    "profile": "Профиль",
+    "fullName": "Имя и Фамилия",
+    "email": "Email",
+    "location": "Локация",
+    "defaultCity": "Город по умолчанию",
+    "preferences": "Предпочтения",
+    "language": "Язык интерфейса",
+    "notifications": "Уведомления",
+    "notificationsDesc": "Получать оповещения о снижении цен",
+    "saving": "Сохранение...",
+    "saveBtn": "Сохранить изменения"
+  }
+}
