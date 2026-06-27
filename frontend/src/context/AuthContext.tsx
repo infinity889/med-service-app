@@ -33,7 +33,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       setIsLoading(true);
-      const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+      // Always use mock auth for now since backend auth is not implemented
+      const isMock = true; // import.meta.env.VITE_USE_MOCK !== 'false';
       
       if (isMock) {
         await new Promise(resolve => setTimeout(resolve, 600));
@@ -65,11 +66,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+    // Always use mock auth for now
+    const isMock = true;
     
     if (isMock) {
       await new Promise(resolve => setTimeout(resolve, 800));
-      const isAdmin = email.toLowerCase() === 'admin@medprice.kz';
+      const isAdmin = email.toLowerCase().includes('admin');
       const mockUser: User = {
         id: '1',
         name: isAdmin ? 'Администратор' : 'Test User',
@@ -90,7 +92,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (name: string, email: string, password: string, city?: string) => {
-    const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+    // Always use mock auth for now
+    const isMock = true;
     
     if (isMock) {
       await new Promise(resolve => setTimeout(resolve, 800));

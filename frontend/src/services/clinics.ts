@@ -4,26 +4,34 @@ import { apiClient } from '@/api/axios';
 export interface Clinic {
   id: string;
   name: string;
-  description: string;
+  slug: string;
   city: string;
   address: string;
   phone: string;
   website: string;
-  workingHours: string;
-  averagePrice: number;
-  lastUpdate: string;
-  verified: boolean;
-  servicesCount: number;
+  logo_url: string | null;
+  working_hours: string | null;
+  rating: number | null;
+  has_online_booking: boolean;
+  latitude: number | null;
+  longitude: number | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
-export interface ClinicService {
-  name: string;
-  category: string;
+export interface ClinicPriceResponse {
+  id: string;
+  service_id: string;
+  service_name: string;
   price: number;
+  currency: string;
+  duration_days: number | null;
+  is_available: boolean;
 }
 
 export interface ClinicDetails extends Clinic {
-  services: ClinicService[];
+  prices: ClinicPriceResponse[];
 }
 
 const MOCK_CLINICS: Clinic[] = [
@@ -146,8 +154,8 @@ export const useClinicDetails = (id?: string) => {
             
             resolve({
               ...clinic,
-              services: MOCK_CLINIC_SERVICES[id] || [],
-            });
+              prices: [],
+            } as any);
           }, 800);
         });
       } else {

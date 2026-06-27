@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useSearch, type SearchFilters, type SearchResult } from '@/services/search';
+import { useSearch, useSuggest, type SearchFilters, type SearchResult } from '@/services/search';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,20 +11,6 @@ import { BellIcon as BellSolidIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getLocale } from '@/i18n';
-
-const SERVICE_DICTIONARY = [
-  'Общий анализ крови (ОАК)',
-  'Биохимический анализ крови',
-  'МРТ головного мозга',
-  'Прием терапевта',
-  'УЗИ брюшной полости',
-  'УЗИ щитовидной железы',
-  'Общий анализ мочи',
-  'ПЦР тест на COVID-19',
-  'ЭКГ с расшифровкой',
-  'Консультация кардиолога',
-  'Рентген грудной клетки'
-];
 
 export function Search() {
   const { t, i18n } = useTranslation();
@@ -46,7 +32,21 @@ export function Search() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { data: results, isLoading } = useSearch(query, filters);
+  const activeFilters = {
+    ...filters,
+    price_min: minPrice === '' ? undefined : minPrice,
+    price_max: maxPrice === '' ? undefined : maxPrice,
+  };
+
+  const { data: results, isLoading } = useSearch(query, activeFilters);
+  const { data: suggestData } = useSuggest(searchInput);
+
+  // Update suggestions when suggestData changes
+  useMemo(() => {
+    if (suggestData) {
+      setSuggestions(suggestData.map(s => s.name));
+    }
+  }, [suggestData]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -75,21 +75,10 @@ export function Search() {
     return results.filter((item: SearchResult) => {
       if (minPrice !== '' && item.price < minPrice) return false;
       if (maxPrice !== '' && item.price > maxPrice) return false;
-      
-      // Calculate mock clinic ratings & booking availability
-      const nameLower = item.clinicName.toLowerCase();
-      let rating = 4.5;
-      let onlineBooking = true;
-      if (nameLower.includes('kdl') || nameLower.includes('олимп')) {
-        rating = 4.8;
-        onlineBooking = true;
-      } else if (nameLower.includes('invitro') || nameLower.includes('инвитро')) {
-        rating = 4.6;
-        onlineBooking = true;
-      } else if (nameLower.includes('sunkar') || nameLower.includes('сункар')) {
-        rating = 4.2;
-        onlineBooking = false;
-      }
+      // Use real clinic ratings & booking availability if available
+      let rating = item.rating ?? 4.0; // fallback if null
+      let onlineBooking = item.working_hours ? true : false; // simplified logic for MVP
+
       
       if (ratingFilter !== '' && rating < ratingFilter) return false;
       if (onlineBookingOnly && !onlineBooking) return false;
@@ -101,12 +90,9 @@ export function Search() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setSearchInput(val);
-    if (val.trim().length > 0) {
-      const filtered = SERVICE_DICTIONARY.filter(s => s.toLowerCase().includes(val.toLowerCase()));
-      setSuggestions(filtered);
+    if (val.trim().length > 1) {
       setShowSuggestions(true);
     } else {
-      setSuggestions([]);
       setShowSuggestions(false);
     }
   };
@@ -412,7 +398,7 @@ export function Search() {
                             <div className="flex flex-col space-y-1">
                               <Badge variant="outline" className="font-normal bg-background text-foreground w-max">{res.city}</Badge>
                               <a 
-                                href={`https://2gis.kz/${res.city.toLowerCase()}/search/${encodeURIComponent(res.clinicName)}`}
+                                href={res.latitude && res.longitude ? `https://2gis.kz/geo/${res.longitude},${res.latitude}` : `https://2gis.kz/${res.city.toLowerCase()}/search/${encodeURIComponent(res.address || res.clinicName)}`}
                                 target="_blank" 
                                 rel="noopener noreferrer" 
                                 className="text-[11px] text-primary hover:underline font-medium block w-max"

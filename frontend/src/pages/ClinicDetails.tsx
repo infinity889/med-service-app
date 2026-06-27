@@ -85,12 +85,13 @@ export function ClinicDetails() {
         <div className="flex-1 space-y-4 min-w-0">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
             <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">{clinic.name}</h1>
-            {clinic.verified && (
-              <Badge variant="outline" className="bg-primary/5 border-primary/20 text-primary">{t('clinic.verified')}</Badge>
+            {clinic.rating && (
+              <Badge variant="outline" className="bg-primary/5 border-primary/20 text-primary">★ {clinic.rating}</Badge>
+            )}
+            {clinic.has_online_booking && (
+              <Badge variant="outline" className="bg-green-500/10 border-green-500/20 text-green-600">Онлайн запись</Badge>
             )}
           </div>
-          
-          <p className="text-muted-foreground max-w-2xl">{clinic.description}</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
             <div className="flex items-start space-x-3">
@@ -115,7 +116,7 @@ export function ClinicDetails() {
             
             <div className="flex items-start space-x-3">
               <ClockIcon className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
-              <div className="text-sm font-medium text-foreground">{clinic.workingHours}</div>
+              <div className="text-sm font-medium text-foreground">{clinic.working_hours || 'Нет данных'}</div>
             </div>
           </div>
         </div>
@@ -126,7 +127,7 @@ export function ClinicDetails() {
           <CardTitle className="text-lg font-medium">{t('clinic.servicesProvided')}</CardTitle>
           <div className="text-xs sm:text-sm text-muted-foreground flex items-center">
             <ArrowPathIcon className="w-4 h-4 mr-1.5" />
-            {t('clinic.pricesParsedOn', { date: clinic.lastUpdate })}
+            {t('clinic.pricesParsedOn', { date: new Date(clinic.updated_at).toLocaleDateString(locale) })}
           </div>
         </CardHeader>
         <CardContent className="p-0 overflow-x-auto">
@@ -134,19 +135,15 @@ export function ClinicDetails() {
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-transparent">
                 <TableHead>{t('clinic.serviceName')}</TableHead>
-                <TableHead>{t('clinic.category')}</TableHead>
                 <TableHead className="text-right">{t('clinic.price')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {clinic.services.map((s, i) => (
-                <TableRow key={i}>
-                  <TableCell className="font-medium text-foreground">{s.name}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className="font-normal text-xs">{s.category}</Badge>
-                  </TableCell>
+              {clinic.prices?.map((p, i) => (
+                <TableRow key={p.id || i} className={!p.is_available ? "opacity-50" : ""}>
+                  <TableCell className="font-medium text-foreground">{p.service_name}</TableCell>
                   <TableCell className="text-right font-semibold text-primary tabular-nums">
-                    {s.price.toLocaleString(locale)} ₸
+                    {p.price.toLocaleString(locale)} {p.currency}
                   </TableCell>
                 </TableRow>
               ))}

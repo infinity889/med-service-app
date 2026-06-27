@@ -3,18 +3,28 @@ import { apiClient } from '@/api/axios';
 
 export interface SearchResult {
   id: string;
+  serviceId: string;
   serviceName: string;
   clinicName: string;
   price: number;
   city: string;
   updatedAt: string;
   category: string;
+  address: string;
+  phone: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  working_hours: string | null;
+  rating: number | null;
+  sourceUrl: string | null;
 }
 
 export interface SearchFilters {
   city: string;
   category: string;
   sortBy: string;
+  price_min?: number;
+  price_max?: number;
 }
 
 const MOCK_RESULTS: SearchResult[] = [
@@ -37,46 +47,45 @@ export const useSearch = (query: string, filters: SearchFilters) => {
         // Simulate network request
         return new Promise<SearchResult[]>((resolve) => {
           setTimeout(() => {
-            let results = [...MOCK_RESULTS];
-            
-            if (query) {
-              const q = query.toLowerCase();
-              results = results.filter(r => 
-                r.serviceName.toLowerCase().includes(q) || 
-                r.clinicName.toLowerCase().includes(q)
-              );
-            }
-            
-            if (filters.city) {
-              results = results.filter(r => r.city === filters.city);
-            }
-            
-            if (filters.category) {
-              results = results.filter(r => r.category === filters.category);
-            }
-            
-            // Basic sorting
-            if (filters.sortBy === 'price_asc') {
-              results.sort((a, b) => a.price - b.price);
-            } else if (filters.sortBy === 'price_desc') {
-              results.sort((a, b) => b.price - a.price);
-            } else if (filters.sortBy === 'date_desc') {
-              results.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-            } else if (filters.sortBy === 'distance_asc') {
-              // Mock distance sorting for MVP
-              results.sort((a, b) => a.clinicName.localeCompare(b.clinicName));
-            }
-            
+            let results = [...MOCK_RESULTS] as any;
             resolve(results);
           }, 600);
         });
       } else {
         const { data } = await apiClient.get<SearchResult[]>('/search', {
-          params: { query, ...filters }
+          params: { 
+            query: query || undefined, 
+            city: filters.city || undefined,
+            category: filters.category || undefined,
+            price_min: filters.price_min || undefined,
+            price_max: filters.price_max || undefined,
+            sortBy: filters.sortBy || undefined
+          }
         });
         return data;
       }
     },
+  });
+};
+
+export interface SuggestResult {
+  name: string;
+}
+
+export const useSuggest = (query: string) => {
+  return useQuery({
+    queryKey: ['suggest', query],
+    queryFn: async () => {
+      if (!query || query.length < 2) return [];
+      const isMock = import.meta.env.VITE_USE_MOCK !== 'false';
+      if (isMock) return [];
+      
+      const { data } = await apiClient.get<SuggestResult[]>('/search/suggest', {
+        params: { q: query }
+      });
+      return data;
+    },
+    enabled: query.length >= 2,
   });
 };
 
