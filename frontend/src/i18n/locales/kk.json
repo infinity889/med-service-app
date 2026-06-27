@@ -1,0 +1,162 @@
+{
+  "header": {
+    "quickSearch": "Жылдам іздеу...",
+    "lastUpdate": "Жаңартылды: {{minutes}} мин бұрын",
+    "notifications": "Хабарландырулар",
+    "language": "Тіл"
+  },
+  "nav": {
+    "overview": "Шолу",
+    "system": "Жүйе",
+    "dashboard": "Басты бет",
+    "search": "Іздеу",
+    "clinics": "Клиникалар",
+    "services": "Қызметтер",
+    "priceComparison": "Баға салыстыру",
+    "history": "Тарих",
+    "statistics": "Статистика",
+    "settings": "Баптаулар",
+    "moderator": "Модератор панелі"
+  },
+  "dashboard": {
+    "title": "Басты бет",
+    "subtitle": "Қазақстан бойынша медициналық қызметтер мен бағаларға шолу.",
+    "totalClinics": "Барлық клиникалар",
+    "medicalServices": "Мед. қызметтер",
+    "priceRecords": "Баға жазбалары",
+    "avgServicePrice": "Орташа баға",
+    "priceTrend": "Орташа баға динамикасы (₸)",
+    "recentUpdates": "Соңғы жаңартулар",
+    "updatedAgo": "Жаңартылды {{hours}} с. бұрын"
+  },
+  "search": {
+    "filters": "Сүзгілер",
+    "city": "Қала",
+    "allCities": "Барлық қалалар",
+    "category": "Санат",
+    "allCategories": "Барлық санаттар",
+    "laboratory": "Зертхана",
+    "diagnostics": "Диагностика",
+    "doctorVisit": "Дәрігер қабылдауы",
+    "sortBy": "Сұрыптау",
+    "priceLowHigh": "Баға: өсу ретімен",
+    "priceHighLow": "Баға: кему ретімен",
+    "placeholder": "Медициналық қызметтер, талдаулар немесе клиникаларды іздеу...",
+    "searchButton": "Іздеу",
+    "suggestions": "Ұсыныстар:",
+    "results": "Іздеу нәтижелері",
+    "found": "Табылды: {{count}}",
+    "serviceName": "Қызмет атауы",
+    "clinic": "Клиника",
+    "location": "Орналасу",
+    "price": "Баға",
+    "lastUpdated": "Жаңартылды",
+    "details": "Толығырақ",
+    "noResults": "Сұранысыңыз бойынша ештеңе табылмады.",
+    "clearSearch": "Іздеуді тазалау"
+  },
+  "clinic": {
+    "verified": "Расталған",
+    "servicesProvided": "Көрсетілетін қызметтер",
+    "pricesParsedOn": "Бағалар алынды: {{date}}",
+    "serviceName": "Қызмет атауы",
+    "category": "Санат",
+    "price": "Баға"
+  },
+  "service": {
+    "knownSynonyms": "Белгілі синонимдер",
+    "priceTrend": "Орташа баға динамикасы (₸)",
+    "bestOffers": "Ең жақсы ұсыныстар",
+    "compareAll": "Барлық клиникалар бойынша салыстыру",
+    "clinicName": "Клиника",
+    "city": "Қала",
+    "address": "Мекенжай",
+    "priceKzt": "Баға (₸)",
+    "lastParsed": "Соңғы парсинг"
+  },
+  "pages": {
+    "clinicsList": "Клиникалар тізімі",
+    "priceComparison": "Баға салыстыру",
+    "history": "Тарих",
+    "statistics": "Статистика",
+    "settings": "Баптаулар"
+  },
+  "clinicsList": {
+    "title": "Клиникалар",
+    "subtitle": "Тексерілген медициналық орталықтар мен зертханалар каталогы",
+    "searchPlaceholder": "Клиникаларды іздеу...",
+    "found": "Табылды: {{count}}",
+    "noResults": "Клиникалар табылмады.",
+    "servicesCount": "Қызметтер: {{count}}"
+  },
+  "auth": {
+    "back": "Артқа",
+    "loginTitle": "Аккаунтқа кіру",
+    "noAccount": "Аккаунтыңыз жоқ па?",
+    "registerLink": "Тіркелу",
+    "email": "Email мекенжайы",
+    "password": "Құпия сөз",
+    "rememberMe": "Мені есте сақтау",
+    "forgotPassword": "Құпия сөзді ұмыттыңыз ба?",
+    "loading": "Жүктелуде...",
+    "loginBtn": "Кіру",
+    "registerTitle": "Аккаунт жасау",
+    "alreadyHaveAccount": "Аккаунтыңыз бар ма?",
+    "loginLink": "Кіру",
+    "fullName": "Аты-жөні",
+    "city": "Қала (міндетті емес)",
+    "selectCity": "Қаланы таңдаңыз",
+    "agreeTerms": "Мен пайдалану шарттарымен келісемін",
+    "registering": "Тіркелу...",
+    "registerBtn": "Тіркелу",
+    "logout": "Шығу",
+    "login": "Кіру"
+  },
+  "services": {
+    "title": "Қызметтер каталогы",
+    "subtitle": "Санатты таңдаңыз немесе іздеуді пайдаланыңыз",
+    "searchPlaceholder": "Каталогтан іздеу...",
+    "labTests": "Зертханалық талдаулар",
+    "diagnostics": "Диагностика",
+    "consultations": "Дәрігер қабылдауы",
+    "noResults": "Ештеңе табылмады"
+  },
+  "compare": {
+    "title": "Баға салыстыру",
+    "subtitle": "Әртүрлі зертханалар мен клиникалардағы қызмет құнын салыстырыңыз",
+    "feature": "Сипаттамасы",
+    "price": "Баға (₸)",
+    "time": "Орындалу мерзімі",
+    "rating": "Клиника рейтингі",
+    "homeTake": "Үйден қан алу",
+    "updated": "Бағаның өзектілігі",
+    "book": "Жазылу"
+  },
+  "history": {
+    "title": "Тарих және бетбелгілер",
+    "subtitle": "Жақында қаралған қызметтер мен сақталған клиникалар",
+    "recent": "Жақында қаралған",
+    "bookmarks": "Бетбелгілер"
+  },
+  "statistics": {
+    "title": "Нарық статистикасы",
+    "subtitle": "Медициналық қызметтердің бағасы мен нарықтағы үлесін талдау",
+    "avgPriceByCity": "Қалалар бойынша орташа баға (₸)",
+    "marketShare": "Зертханалардың нарықтағы үлесі (%)"
+  },
+  "settings": {
+    "title": "Баптаулар",
+    "subtitle": "Профильді және қосымша қалауларын басқару",
+    "profile": "Профиль",
+    "fullName": "Аты-жөні",
+    "email": "Email",
+    "location": "Орналасу",
+    "defaultCity": "Негізгі қала",
+    "preferences": "Қалаулар",
+    "language": "Интерфейс тілі",
+    "notifications": "Хабарландырулар",
+    "notificationsDesc": "Бағаның төмендеуі туралы хабарландыру алу",
+    "saving": "Сақталуда...",
+    "saveBtn": "Өзгерістерді сақтау"
+  }
+}
