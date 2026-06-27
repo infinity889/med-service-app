@@ -1,0 +1,23 @@
+fastapi[all]==0.111.0
+uvicorn[standard]==0.29.0
+sqlalchemy[asyncio]==2.0.30
+alembic==1.13.1
+asyncpg==0.29.0
+pydantic==2.7.1
+pydantic-settings==2.2.1
+pandas==2.2.2
+openpyxl==3.1.2
+pdfplumber==0.11.0
+python-docx==1.1.2
+# easyocr==1.7.1          # временно отключен (тянет PyTorch 500MB+)
+# sentence-transformers==2.7.0  # временно отключен
+rapidfuzz==3.9.0
+loguru==0.7.2
+pytest==8.2.0
+pytest-asyncio==0.23.6
+python-dotenv==1.0.1
+psycopg2-binary==2.9.9
+python-multipart==0.0.9
+groq==0.8.0
+playwright==1.44.0
+httpx<0.28.0
