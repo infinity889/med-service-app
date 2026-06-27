@@ -60,6 +60,11 @@ export const useSearch = (query: string, filters: SearchFilters) => {
               results.sort((a, b) => a.price - b.price);
             } else if (filters.sortBy === 'price_desc') {
               results.sort((a, b) => b.price - a.price);
+            } else if (filters.sortBy === 'date_desc') {
+              results.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+            } else if (filters.sortBy === 'distance_asc') {
+              // Mock distance sorting for MVP
+              results.sort((a, b) => a.clinicName.localeCompare(b.clinicName));
             }
             
             resolve(results);

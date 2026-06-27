@@ -1,6 +1,22 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { MagnifyingGlassIcon, BellIcon, ArrowPathIcon, Bars3Icon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+
+const SERVICE_DICTIONARY = [
+  'Общий анализ крови (ОАК)',
+  'Биохимический анализ крови',
+  'МРТ головного мозга',
+  'Прием терапевта',
+  'УЗИ брюшной полости',
+  'УЗИ щитовидной железы',
+  'Общий анализ мочи',
+  'ПЦР тест на COVID-19',
+  'ЭКГ с расшифровкой',
+  'Консультация кардиолога',
+  'Рентген грудной клетки'
+];
 
 interface HeaderProps {
   onMenuClick?: () => void
@@ -8,6 +24,30 @@ interface HeaderProps {
 
 export function Header({ onMenuClick }: HeaderProps) {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  
+  const [searchInput, setSearchInput] = useState('')
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [suggestions, setSuggestions] = useState<string[]>([])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setSearchInput(val);
+    if (val.trim().length > 0) {
+      const filtered = SERVICE_DICTIONARY.filter(s => s.toLowerCase().includes(val.toLowerCase()));
+      setSuggestions(filtered);
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSelect = (suggestion: string) => {
+    setSearchInput(suggestion);
+    setShowSuggestions(false);
+    navigate('/search');
+  };
 
   return (
     <header className="h-14 sm:h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 bg-card border-b border-border z-10 shrink-0 gap-3">
@@ -28,7 +68,30 @@ export function Header({ onMenuClick }: HeaderProps) {
             type="text"
             className="block w-full pl-9 pr-3 py-2 border border-border rounded-md leading-5 bg-background placeholder-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-colors shadow-sm"
             placeholder={t('header.quickSearch')}
+            value={searchInput}
+            onChange={handleInputChange}
+            onFocus={() => { if (searchInput.trim().length > 0) setShowSuggestions(true); }}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && searchInput.trim()) {
+                navigate('/search');
+              }
+            }}
           />
+          {/* Autocomplete Dropdown */}
+          {showSuggestions && suggestions.length > 0 && (
+            <div className="absolute z-10 w-full mt-1 bg-card border border-border rounded-xl shadow-lg max-h-60 overflow-y-auto top-full">
+              {suggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="px-4 py-2 cursor-pointer hover:bg-muted/50 text-foreground transition-colors border-b border-border/50 last:border-0 text-sm"
+                  onClick={() => handleSelect(suggestion)}
+                >
+                  {suggestion}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

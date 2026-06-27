@@ -12,11 +12,27 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getLocale } from '@/i18n';
 
+const SERVICE_DICTIONARY = [
+  'Общий анализ крови (ОАК)',
+  'Биохимический анализ крови',
+  'МРТ головного мозга',
+  'Прием терапевта',
+  'УЗИ брюшной полости',
+  'УЗИ щитовидной железы',
+  'Общий анализ мочи',
+  'ПЦР тест на COVID-19',
+  'ЭКГ с расшифровкой',
+  'Консультация кардиолога',
+  'Рентген грудной клетки'
+];
+
 export function Search() {
   const { t, i18n } = useTranslation();
   const locale = getLocale(i18n.language);
   const [query, setQuery] = useState('');
   const [searchInput, setSearchInput] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [filters, setFilters] = useState<SearchFilters>({ city: '', category: '', sortBy: 'price_asc' });
   const [minPrice, setMinPrice] = useState<number | ''>('');
   const [maxPrice, setMaxPrice] = useState<number | ''>('');
@@ -82,9 +98,23 @@ export function Search() {
     });
   }, [results, minPrice, maxPrice, ratingFilter, onlineBookingOnly]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setSearchInput(val);
+    if (val.trim().length > 0) {
+      const filtered = SERVICE_DICTIONARY.filter(s => s.toLowerCase().includes(val.toLowerCase()));
+      setSuggestions(filtered);
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setQuery(searchInput);
+    setShowSuggestions(false);
   };
 
   const handleExportCSV = () => {
@@ -224,6 +254,8 @@ export function Search() {
             >
               <option value="price_asc">{t('search.priceLowHigh')}</option>
               <option value="price_desc">{t('search.priceHighLow')}</option>
+              <option value="date_desc">Сначала новые (по дате)</option>
+              <option value="distance_asc">Сначала ближайшие</option>
             </select>
           </div>
         </div>
@@ -242,7 +274,7 @@ export function Search() {
           </button>
 
           <form onSubmit={handleSearch} className="relative shadow-sm group flex flex-col sm:block">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none sm:block hidden">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <MagnifyingGlassIcon className="h-6 w-6 text-muted-foreground group-focus-within:text-primary transition-colors" />
             </div>
             <Input 
@@ -250,11 +282,32 @@ export function Search() {
               className="w-full pl-4 sm:pl-12 pr-4 sm:pr-24 py-5 sm:py-7 text-base sm:text-lg rounded-xl border-border bg-card shadow-sm focus-visible:ring-primary transition-all text-foreground" 
               placeholder={t('search.placeholder')}
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={handleInputChange}
+              onFocus={() => { if (searchInput.trim().length > 0) setShowSuggestions(true); }}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
             />
             <Button type="submit" className="mt-2 sm:mt-0 w-full sm:w-auto sm:absolute sm:right-2 sm:top-2 sm:bottom-2 rounded-lg px-8 text-md font-medium">
               {t('search.searchButton')}
             </Button>
+
+            {/* Autocomplete Dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="absolute z-10 w-full mt-2 bg-card border border-border rounded-xl shadow-lg max-h-60 overflow-y-auto top-full">
+                {suggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className="px-4 py-3 cursor-pointer hover:bg-muted/50 text-foreground transition-colors border-b border-border/50 last:border-0"
+                    onClick={() => {
+                      setSearchInput(suggestion);
+                      setQuery(suggestion);
+                      setShowSuggestions(false);
+                    }}
+                  >
+                    {suggestion}
+                  </div>
+                ))}
+              </div>
+            )}
           </form>
           
           {/* Quick Suggestions */}
