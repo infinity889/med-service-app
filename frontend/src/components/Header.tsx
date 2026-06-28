@@ -46,7 +46,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const handleSelect = (suggestion: string) => {
     setSearchInput(suggestion);
     setShowSuggestions(false);
-    navigate('/search');
+    navigate(`/search?q=${encodeURIComponent(suggestion)}`);
   };
 
   return (
@@ -74,7 +74,7 @@ export function Header({ onMenuClick }: HeaderProps) {
             onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && searchInput.trim()) {
-                navigate('/search');
+                navigate(`/search?q=${encodeURIComponent(searchInput.trim())}`);
               }
             }}
           />

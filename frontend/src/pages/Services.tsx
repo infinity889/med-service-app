@@ -1,57 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { MagnifyingGlassIcon, BeakerIcon, HeartIcon, UserIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, BeakerIcon, HeartIcon, UserIcon, CheckBadgeIcon, FolderIcon } from '@heroicons/react/24/outline';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useQuery } from '@tanstack/react-query';
+import { servicesApi } from '@/services/catalog';
 
 export function Services() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: categories = [], isLoading } = useQuery({
+    queryKey: ['catalog'],
+    queryFn: servicesApi.getCatalog
+  });
 
-  useEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => setIsLoading(false), 600);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const categories = [
-    {
-      id: 'lab',
-      titleKey: 'services.labTests',
-      icon: <BeakerIcon className="w-6 h-6 text-primary" />,
-      items: [
-        { id: '1', name: 'Общий анализ крови (ОАК)', avgPrice: 2500 },
-        { id: '2', name: 'Биохимический анализ крови', avgPrice: 6500 },
-        { id: '3', name: 'Витамин D', avgPrice: 8000 },
-        { id: '4', name: 'ПЦР тест на COVID-19', avgPrice: 5000 },
-      ]
-    },
-    {
-      id: 'diagnostics',
-      titleKey: 'services.diagnostics',
-      icon: <HeartIcon className="w-6 h-6 text-primary" />,
-      items: [
-        { id: '5', name: 'МРТ головного мозга', avgPrice: 18000 },
-        { id: '6', name: 'УЗИ брюшной полости', avgPrice: 6000 },
-        { id: '7', name: 'КТ легких', avgPrice: 15000 },
-        { id: '8', name: 'ЭКГ', avgPrice: 3000 },
-      ]
-    },
-    {
-      id: 'consultations',
-      titleKey: 'services.consultations',
-      icon: <UserIcon className="w-6 h-6 text-primary" />,
-      items: [
-        { id: '9', name: 'Прием терапевта', avgPrice: 8000 },
-        { id: '10', name: 'Прием невропатолога', avgPrice: 10000 },
-        { id: '11', name: 'Прием гинеколога', avgPrice: 9000 },
-        { id: '12', name: 'Прием кардиолога', avgPrice: 12000 },
-      ]
-    }
-  ];
+  const getCategoryIcon = (categoryName: string) => {
+    const name = categoryName.toLowerCase();
+    if (name.includes('лаборат') || name.includes('анализ')) return <BeakerIcon className="w-6 h-6 text-primary" />;
+    if (name.includes('диагност') || name.includes('мрт') || name.includes('узи')) return <HeartIcon className="w-6 h-6 text-primary" />;
+    if (name.includes('врач') || name.includes('прием')) return <UserIcon className="w-6 h-6 text-primary" />;
+    return <FolderIcon className="w-6 h-6 text-primary" />;
+  };
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 animate-in fade-in duration-500 max-w-7xl mx-auto">
@@ -97,9 +68,9 @@ export function Services() {
               <CardContent className="p-6">
                 <div className="flex items-center space-x-3 mb-6">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                    {category.icon}
+                    {getCategoryIcon(category.name)}
                   </div>
-                  <h2 className="text-lg font-semibold text-foreground">{t(category.titleKey, category.titleKey)}</h2>
+                  <h2 className="text-lg font-semibold text-foreground">{category.name}</h2>
                 </div>
                 
                 <div className="space-y-2">

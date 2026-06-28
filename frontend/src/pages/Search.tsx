@@ -6,17 +6,19 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, BellIcon, CheckIcon } from '@heroicons/react/24/outline';
-import { BellIcon as BellSolidIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router-dom';
+import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, BellIcon, CheckIcon, XMarkIcon, ArrowTopRightOnSquareIcon, StarIcon } from '@heroicons/react/24/outline';
+import { BellIcon as BellSolidIcon, StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getLocale } from '@/i18n';
 
 export function Search() {
   const { t, i18n } = useTranslation();
   const locale = getLocale(i18n.language);
-  const [query, setQuery] = useState('');
-  const [searchInput, setSearchInput] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialQuery = searchParams.get('q') || '';
+  const [query, setQuery] = useState(initialQuery);
+  const [searchInput, setSearchInput] = useState(initialQuery);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [filters, setFilters] = useState<SearchFilters>({ city: '', category: '', sortBy: 'price_asc' });
@@ -28,9 +30,61 @@ export function Search() {
     const saved = localStorage.getItem('price_subscriptions');
     return saved ? JSON.parse(saved) : [];
   });
+  const [bookmarks, setBookmarks] = useState<string[]>(() => {
+    const saved = localStorage.getItem('med_bookmarks');
+    return saved ? JSON.parse(saved).map((b: any) => b.id) : [];
+  });
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null);
   const navigate = useNavigate();
+
+  const addToRecentHistory = (item: SearchResult) => {
+    const saved = JSON.parse(localStorage.getItem('med_recent_history') || '[]');
+    const entry = {
+      id: item.id,
+      serviceName: item.serviceName,
+      clinicName: item.clinicName,
+      price: item.price,
+      city: item.city,
+      category: item.category,
+      sourceUrl: item.sourceUrl,
+      viewedAt: new Date().toISOString(),
+    };
+    const filtered = saved.filter((e: any) => e.id !== item.id);
+    const updated = [entry, ...filtered].slice(0, 50);
+    localStorage.setItem('med_recent_history', JSON.stringify(updated));
+  };
+
+  const toggleBookmark = (item: SearchResult) => {
+    const saved = JSON.parse(localStorage.getItem('med_bookmarks') || '[]');
+    const exists = saved.some((b: any) => b.id === item.id);
+    let updated;
+    if (exists) {
+      updated = saved.filter((b: any) => b.id !== item.id);
+      showToast(`"${item.serviceName}" удалён из закладок`);
+    } else {
+      const entry = {
+        id: item.id,
+        serviceName: item.serviceName,
+        clinicName: item.clinicName,
+        price: item.price,
+        city: item.city,
+        category: item.category,
+        sourceUrl: item.sourceUrl,
+        addedAt: new Date().toISOString(),
+      };
+      updated = [entry, ...saved];
+      showToast(`"${item.serviceName}" добавлен в закладки ★`);
+    }
+    localStorage.setItem('med_bookmarks', JSON.stringify(updated));
+    setBookmarks(updated.map((b: any) => b.id));
+  };
+
+  const handleOpenDetails = (item: SearchResult) => {
+    addToRecentHistory(item);
+    setSelectedResult(item);
+  };
 
   const activeFilters = {
     ...filters,
@@ -100,6 +154,11 @@ export function Search() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setQuery(searchInput);
+    setSearchParams(prev => {
+      if (searchInput) prev.set('q', searchInput);
+      else prev.delete('q');
+      return prev;
+    });
     setShowSuggestions(false);
   };
 
@@ -286,6 +345,10 @@ export function Search() {
                     onClick={() => {
                       setSearchInput(suggestion);
                       setQuery(suggestion);
+                      setSearchParams(prev => {
+                        prev.set('q', suggestion);
+                        return prev;
+                      });
                       setShowSuggestions(false);
                     }}
                   >
@@ -304,7 +367,11 @@ export function Search() {
                 key={s} 
                 variant="secondary" 
                 className="cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors text-xs font-normal border border-transparent hover:border-primary/20 text-foreground"
-                onClick={() => { setSearchInput(s); setQuery(s); }}
+                onClick={() => { 
+                  setSearchInput(s); 
+                  setQuery(s); 
+                  setSearchParams(prev => { prev.set('q', s); return prev; });
+                }}
               >
                 {s}
               </Badge>
@@ -365,7 +432,13 @@ export function Search() {
                           <div className="flex flex-col items-center justify-center space-y-3">
                             <MagnifyingGlassIcon className="w-8 h-8 opacity-20" />
                             <p>{t('search.noResults')}</p>
-                            <Button variant="link" onClick={() => {setSearchInput(''); setQuery(''); setMinPrice(''); setMaxPrice('');}}>{t('search.clearSearch')}</Button>
+                            <Button variant="link" onClick={() => {
+                              setSearchInput(''); 
+                              setQuery(''); 
+                              setSearchParams(prev => { prev.delete('q'); return prev; });
+                              setMinPrice(''); 
+                              setMaxPrice('');
+                            }}>{t('search.clearSearch')}</Button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -375,6 +448,20 @@ export function Search() {
                           <TableCell className="font-medium text-foreground">
                             <div className="flex items-center space-x-2">
                               <span className="line-clamp-2">{res.serviceName}</span>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleBookmark(res);
+                                }}
+                                className="text-muted-foreground hover:text-amber-500 transition-colors focus:outline-none shrink-0"
+                                title="Добавить в закладки"
+                              >
+                                {bookmarks.includes(res.id) ? (
+                                  <StarSolidIcon className="w-4 h-4 text-amber-500" />
+                                ) : (
+                                  <StarIcon className="w-4 h-4" />
+                                )}
+                              </button>
                               <button 
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -418,7 +505,7 @@ export function Search() {
                               variant="outline" 
                               size="sm" 
                               className="sm:opacity-0 sm:group-hover:opacity-100 border-border hover:border-primary hover:text-primary transition-all bg-background"
-                              onClick={() => navigate(`/services`)}
+                              onClick={() => handleOpenDetails(res)}
                             >
                               {t('search.details')}
                             </Button>
@@ -433,6 +520,65 @@ export function Search() {
           </Card>
         </div>
       </div>
+
+      {/* Details Modal */}
+      {selectedResult && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={() => setSelectedResult(null)}>
+          <div className="bg-card w-full max-w-md rounded-xl shadow-xl border border-border overflow-hidden" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-4 border-b border-border bg-muted/20">
+              <h3 className="font-semibold text-lg text-foreground">Детали услуги</h3>
+              <button 
+                onClick={() => setSelectedResult(null)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <XMarkIcon className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-4 text-sm">
+              <div>
+                <span className="text-muted-foreground block mb-1">Название услуги</span>
+                <span className="font-medium text-foreground">{selectedResult.serviceName}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <span className="text-muted-foreground block mb-1">Клиника</span>
+                  <span className="font-medium text-foreground">{selectedResult.clinicName}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground block mb-1">Город</span>
+                  <span className="font-medium text-foreground">{selectedResult.city}</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <span className="text-muted-foreground block mb-1">Цена</span>
+                  <span className="font-bold text-primary text-base">{selectedResult.price.toLocaleString(locale)} ₸</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground block mb-1">Категория</span>
+                  <span className="font-medium text-foreground">{selectedResult.category}</span>
+                </div>
+              </div>
+              {selectedResult.sourceUrl ? (
+                <div className="pt-2">
+                  <a 
+                    href={selectedResult.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground rounded-lg transition-colors font-medium"
+                  >
+                    Перейти к источнику <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+                  </a>
+                </div>
+              ) : (
+                <div className="pt-2 text-center text-muted-foreground text-xs">
+                  Ссылка на оригинальный источник недоступна
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

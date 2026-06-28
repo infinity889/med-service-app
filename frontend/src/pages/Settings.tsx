@@ -144,6 +144,38 @@ export function Settings() {
           </button>
         </div>
       </form>
+
+      <Card className="border-red-200 shadow-sm mt-8">
+        <CardHeader className="bg-red-50 border-b border-red-100">
+          <CardTitle className="text-lg font-medium text-red-700">Опасная зона (Админ)</CardTitle>
+        </CardHeader>
+        <CardContent className="p-6 space-y-4">
+          <p className="text-sm text-gray-600">
+            Используйте эту кнопку для полной очистки базы данных и сброса всех данных (включая результаты парсинга). Будут восстановлены только базовые тестовые данные.
+          </p>
+          <button
+            type="button"
+            onClick={async () => {
+              if (window.confirm("Вы уверены, что хотите удалить ВСЕ данные? Это действие необратимо!")) {
+                try {
+                  const res = await fetch('http://localhost:8000/api/system/reset_db', { method: 'DELETE' });
+                  if (res.ok) {
+                    alert("База данных успешно сброшена!");
+                    window.location.reload();
+                  } else {
+                    alert("Ошибка при сбросе базы данных");
+                  }
+                } catch (e) {
+                  alert("Ошибка соединения с сервером");
+                }
+              }
+            }}
+            className="px-6 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 shadow-sm transition-colors"
+          >
+            Удалить все данные (Сброс БД)
+          </button>
+        </CardContent>
+      </Card>
     </div>
   );
 }

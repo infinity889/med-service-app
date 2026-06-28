@@ -98,18 +98,24 @@ export function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="flex items-center justify-between border-b border-border pb-3 last:border-0 last:pb-0">
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium text-foreground">Общий анализ крови (ОАК)</span>
-                    <span className="text-xs text-muted-foreground">KDL Olymp • Astana</span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-sm font-semibold tabular-nums">2 500 ₸</span>
-                    <span className="text-[10px] text-primary">{t('dashboard.updatedAgo', { hours: 2 })}</span>
-                  </div>
+              {[].length === 0 ? (
+                <div className="py-8 flex flex-col items-center justify-center text-muted-foreground">
+                  <span className="text-sm font-medium">Нет недавних обновлений</span>
                 </div>
-              ))}
+              ) : (
+                [1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="flex items-center justify-between border-b border-border pb-3 last:border-0 last:pb-0">
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-foreground">Общий анализ крови (ОАК)</span>
+                      <span className="text-xs text-muted-foreground">KDL Olymp • Astana</span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span className="text-sm font-semibold tabular-nums">2 500 ₸</span>
+                      <span className="text-[10px] text-primary">{t('dashboard.updatedAgo', { hours: 2 })}</span>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </CardContent>
         </Card>

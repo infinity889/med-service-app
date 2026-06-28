@@ -11,73 +11,52 @@ export function Statistics() {
 
   // Comprehensive mockup database for generating statistical insights dynamically
   const statisticalData = useMemo(() => {
-    // Basic service datasets depending on category
-    let barData: any[] = [
-      { name: 'Алматы', 'ОАК': 2800, 'МРТ': 22000, 'Прием': 12000 },
-      { name: 'Астана', 'ОАК': 2500, 'МРТ': 18000, 'Прием': 10000 },
-      { name: 'Шымкент', 'ОАК': 2000, 'МРТ': 15000, 'Прием': 8000 },
+    let baseBarData = [
+      { name: 'Astana', 'KDL Olymp': 4500, 'Invitro': 4800, 'Helix': 4200 },
+      { name: 'Almaty', 'KDL Olymp': 5200, 'Invitro': 5500, 'Helix': 4900, 'Orhun Medical': 8500 },
+      { name: 'Shymkent', 'KDL Olymp': 3800, 'Invitro': 4100, 'Sunkar': 3500 },
     ];
 
-    if (selectedCategory === 'Лаборатория') {
-      barData = [
-        { name: 'Алматы', 'ОАК': 2800, 'Биохимия': 9000, 'ПЦР Тест': 7500 },
-        { name: 'Астана', 'ОАК': 2500, 'Биохимия': 8500, 'ПЦР Тест': 7000 },
-        { name: 'Шымкент', 'ОАК': 2200, 'Биохимия': 8000, 'ПЦР Тест': 6500 },
-      ];
-    } else if (selectedCategory === 'Диагностика') {
-      barData = [
-        { name: 'Алматы', 'МРТ': 22000, 'УЗИ ОБП': 7000, 'ЭКГ': 4000 },
-        { name: 'Астана', 'МРТ': 18000, 'УЗИ ОБП': 6500, 'ЭКГ': 3500 },
-        { name: 'Шымкент', 'МРТ': 15000, 'УЗИ ОБП': 6000, 'ЭКГ': 3000 },
-      ];
-    } else if (selectedCategory === 'Приём врача') {
-      barData = [
-        { name: 'Алматы', 'Терапевт': 12000, 'Педиатр': 11000, 'Кардиолог': 15000 },
-        { name: 'Астана', 'Терапевт': 10000, 'Педиатр': 9500, 'Кардиолог': 13000 },
-        { name: 'Шымкент', 'Терапевт': 8000, 'Педиатр': 7500, 'Кардиолог': 10000 },
-      ];
-    }
-
-    // Filter city if specified (only show that city's bar)
     if (selectedCity) {
-      barData = barData.filter(d => d.name === (selectedCity === 'Astana' ? 'Астана' : selectedCity === 'Almaty' ? 'Алматы' : 'Шымкент'));
+      baseBarData = baseBarData.filter(d => d.name === selectedCity);
     }
 
-    // Dynamic market shares based on category/city
+    if (selectedCategory) {
+      const multiplier = selectedCategory === 'Лаборатория' ? 1 : selectedCategory === 'Диагностика' ? 2.5 : 1.5;
+      baseBarData = baseBarData.map(cityData => {
+        const newData = { ...cityData };
+        Object.keys(newData).forEach(key => {
+          if (key !== 'name') {
+            newData[key] = Math.round((newData[key] as number) * multiplier);
+          }
+        });
+        return newData;
+      });
+    }
+
     let pieData = [
       { name: 'KDL Olymp', value: 45 },
       { name: 'Invitro', value: 30 },
-      { name: 'Orhun Medical', value: 15 },
-      { name: 'Sunkar / Другие', value: 10 },
+      { name: 'Helix', value: 15 },
+      { name: 'Другие', value: 10 },
     ];
 
-    if (selectedCategory === 'Диагностика') {
+    if (selectedCity === 'Shymkent') {
       pieData = [
-        { name: 'Orhun Medical', value: 40 },
-        { name: 'Sunkar', value: 30 },
-        { name: 'Medical Park', value: 20 },
-        { name: 'Другие', value: 10 },
+        { name: 'Sunkar', value: 50 },
+        { name: 'KDL Olymp', value: 30 },
+        { name: 'Invitro', value: 20 },
       ];
-    } else if (selectedCategory === 'Приём врача') {
+    } else if (selectedCity === 'Almaty') {
       pieData = [
-        { name: 'Emirmed', value: 35 },
-        { name: 'Sunkar', value: 25 },
-        { name: 'Aksai Clinic', value: 25 },
-        { name: 'Другие', value: 15 },
+        { name: 'KDL Olymp', value: 35 },
+        { name: 'Orhun Medical', value: 25 },
+        { name: 'Invitro', value: 25 },
+        { name: 'Helix', value: 15 },
       ];
     }
 
-    // Adjust values slightly based on city to simulate a live database
-    if (selectedCity === 'Almaty') {
-      pieData = pieData.map(item => ({ ...item, value: Math.round(item.value * 1.1) }));
-    } else if (selectedCity === 'Shymkent') {
-      pieData = pieData.map(item => ({
-        ...item,
-        value: item.name.includes('Sunkar') ? item.value + 15 : Math.max(5, item.value - 5)
-      }));
-    }
-
-    return { barData, pieData };
+    return { barData: baseBarData, pieData };
   }, [selectedCity, selectedCategory]);
 
   const COLORS = ['#FF4F00', '#FF7A33', '#FFA566', '#FFD099'];
